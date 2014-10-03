@@ -119,7 +119,12 @@ if(!isset($row['ts'])) {
   echo "<div class='container'>";
   echo "<table border=0>";    
   echo "<tr>";
-  echo "<td align=center colspan=2><h3>Temperature & Humidity</h3></td>";
+  if($size==2) {
+    echo "<td></td>";
+  }
+  echo "<td align=center><h3 style='display:inline;'>Temperature & Humidity</h3>&nbsp;";
+  echo "<img src='health/mask.png' onclick='location.href=\"health/mold.html\"' width=30 height=30 style='cursor:pointer;'>";  
+  echo "</td>";
   echo "</tr>";
   echo "<tr>";
   if($size==2) {
@@ -135,9 +140,6 @@ if(!isset($row['ts'])) {
   }
   echo "<td>";
   echo "<img src='graphs/dht22.php?id=$id&width=$width_pix[$size]&height=$height_pix[$size]&start_ts=$start_day_utc&end_ts=$end_day_utc' width='$width_pix[$size]' height='$height_pix[$size]' onclick='go_calendar(0);' style='cursor:pointer;'>";
-  echo "</td>";
-  echo "<td>";
-  echo "<img src='health/mask.png' onclick='location.href=\"health/mold.html\"' style='cursor:pointer;'>";
   echo "</td>";
   echo "</tr>";
   echo "</table>";

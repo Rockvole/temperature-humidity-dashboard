@@ -14,7 +14,7 @@ do
   echo url
   spark get rockvole3 url
   
-  sleep 30
+  sleep 3600
 done
 
 
