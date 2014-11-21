@@ -3,6 +3,6 @@ HttpClient/HttpClient.cpp
 HttpClient/HttpClient.h
 ReadingSync/ReadingSync.cpp
 ReadingSync/ReadingSync.h
-DHT22/idDHT22.cpp
-DHT22/idDHT22.h
+DHT22/PietteTech_DHT.cpp
+DHT22/PietteTech_DHT.h
 

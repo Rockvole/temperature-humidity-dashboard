@@ -1,16 +1,16 @@
 #include "ReadingSync.h"
 #include "HttpClient.h"
-#include "idDHT22.h"
+#include "PietteTech_DHT.h"
 // -----------------
 // Read temperature & humidity and send to server
 // -----------------
-#define INTERVAL_MINS 60
+#define INTERVAL_MINS 10
 
 ReadingSync rs (INTERVAL_MINS, Time.now());
 HttpClient http;
 void dht22_wrapper();
 // DHT instantiate
-idDHT22 DHT22(D2, dht22_wrapper);
+PietteTech_DHT DHT(D2, DHT22, dht22_wrapper);
 
 int unix_time = 0;
 int reading_time = 0;
@@ -37,7 +37,7 @@ void setup()
 }
 
 void dht22_wrapper() {
-	DHT22.isrCallback();
+	DHT.isrCallback();
 }
 
 void loop()
@@ -46,11 +46,7 @@ void loop()
 
   if(rs.isTimeToTakeReading(unix_time)) {
 	reading_time = unix_time;
-	DHT22.acquire();
-	while (DHT22.acquiring());	
-	
-	humidity = DHT22.getHumidity();
-    temperature = DHT22.getCelsius();
+	read_dht22();
   } else if (rs.isTimeToSendReading(unix_time)) {
 	sprintf(url, "/dht22/get_reading.php?core_id=%s&temp=%2f&hum=%2f&unix_time=%i", Spark.deviceID().c_str(), temperature, humidity, reading_time);  
     request.path = url;
@@ -58,4 +54,12 @@ void loop()
     rs.setReadingSent();
   }
   delay(1000);
+}
+
+void read_dht22() {
+  DHT.acquire();
+  while (DHT.acquiring());
+    
+  humidity = DHT.getHumidity();
+  temperature = DHT.getCelsius(); 
 }
