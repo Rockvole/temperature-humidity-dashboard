@@ -1,12 +1,12 @@
 <html>
   <head>
-    <title>Add New Core</title>
+    <title>Add New Sensor</title>
     <link rel="stylesheet" type="text/css" href="html/stylesheet.css">    
   </head>
   
   <body>
 <?php
-  echo "<h2>Add New Core</h2>";
+  echo "<h2>Add New Sensor</h2>";
   
   echo "<form action='initialize_core.php' method='get'>";
   echo "<table border=0 class='form_table'>";
