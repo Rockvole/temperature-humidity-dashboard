@@ -1,7 +1,7 @@
 <?php // content="text/plain; charset=utf-8"
 include 'graph_base.php';
 
-$result=mysqli_query($conn,"SELECT * from readings WHERE core_id=$id and ts>= $start_ts and ts<= $end_ts order by ts"); 
+$result=mysqli_query($conn,"SELECT * from readings WHERE core_id=$id and ts>= $start_ts and ts<= ($end_ts + 1) order by ts"); 
 $ts=Array();
 $temperature=Array();
 $humidity=Array();
@@ -12,12 +12,13 @@ while($row = mysqli_fetch_array($result)) {
 	$temperature[]=$row['temperature'];
 	$humidity[]=$row['humidity'];
 }
-$temperature_plot=new LinePlot($temperature,$ts);
-$temperature_plot->SetColor('hotpink3');
-$temperature_plot->SetWeight(2);
 $humidity_plot=new LinePlot($humidity,$ts);
 $humidity_plot->SetColor('dodgerblue');
 $humidity_plot->SetWeight(2);
+$humidity_plot->SetFillColor($line_fill_color);
+$temperature_plot=new LinePlot($temperature,$ts);
+$temperature_plot->SetColor('hotpink3');
+$temperature_plot->SetWeight(2);
 
 $graph = new Graph($width,$height);
 $graph->SetFrame(false);
