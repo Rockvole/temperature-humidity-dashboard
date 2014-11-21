@@ -5,6 +5,10 @@ do
   echo
   echo ------------------------------
   date
+  
+  echo ip
+  spark get rockvole3 ip
+  
   echo temperature
   spark get rockvole3 temperature
   
