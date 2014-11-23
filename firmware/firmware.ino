@@ -36,7 +36,7 @@ char ip_display[16];
 void setup()
 {
   // Connect the temperature sensor to D2 and configure it to be an input
-  pinMode(DHT_PIN, INPUT);
+  pinMode(DHT_PIN, INPUT_PULLUP);
   
   request.ip = {0,0,0,0}; // Fill in if you dont want to resolve host
   //request.ip = {192, 168, 1, 130}; // davidlub
