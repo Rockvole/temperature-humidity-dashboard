@@ -19,6 +19,7 @@ struct reading {
 std::queue<reading> q;
 reading sample;
 int unix_time = 0;
+int uptime_start=0;
 
 // --------------------------------------------------------------------- DHT22
 void dht22_wrapper();
@@ -36,12 +37,13 @@ char ip_display[16];
 void setup()
 {
   // Connect the temperature sensor to D2 and configure it to be an input
-  pinMode(DHT_PIN, INPUT_PULLUP);
+  pinMode(DHT_PIN, INPUT);
   
   request.ip = {0,0,0,0}; // Fill in if you dont want to resolve host
   //request.ip = {192, 168, 1, 130}; // davidlub
   request.port = 80;  
   resolveHost();
+  uptime_start = Time.now();
 
   // Register Spark variables
   Spark.variable("ip", &ip_display, STRING);   
@@ -71,9 +73,10 @@ void loop()
       do {
         reading_sent=false;
         curr_sample = q.front();  
-        sprintf(url, "/dht22/get_reading.php?core_id=%s&temp=%2f&hum=%2f&unix_time=%i", 
+        sprintf(url, "/dht22/get_reading.php?core_id=%s&temp=%2f&hum=%2f&unix_time=%i&uptime=%i", 
                      Spark.deviceID().c_str(), curr_sample.temperature, 
-                     curr_sample.humidity, curr_sample.reading_time);  
+                     curr_sample.humidity, curr_sample.reading_time,
+                     (unix_time-uptime_start));  
         request.path = url;
         http.get(request, response);
         char read_time_chars[12];
