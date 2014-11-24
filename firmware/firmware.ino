@@ -8,7 +8,7 @@
 #define INTERVAL_MINS 10
 #define DHT_PIN                 D2
 
-ReadingSync rs (INTERVAL_MINS, Time.now());
+ReadingSync rs (INTERVAL_MINS, 0, Time.now());
 
 struct reading {
     int    reading_time = 0;    
@@ -19,6 +19,7 @@ struct reading {
 std::queue<reading> q;
 reading sample;
 int unix_time = 0;
+int stage=0;
 int uptime_start=0;
 
 // --------------------------------------------------------------------- DHT22
@@ -43,7 +44,6 @@ void setup()
   //request.ip = {192, 168, 1, 130}; // davidlub
   request.port = 80;  
   resolveHost();
-  uptime_start = Time.now();
 
   // Register Spark variables
   Spark.variable("ip", &ip_display, STRING);   
@@ -55,40 +55,52 @@ void setup()
 }
 
 void dht_wrapper() {
-	DHT.isrCallback();
+  DHT.isrCallback();
 }
 
 void loop()
 {
   unix_time=Time.now();
+  if(uptime_start<1000000000) uptime_start = unix_time;  
+  stage=rs.getStage(unix_time);  
 
-  if(rs.isTimeToTakeReading(unix_time)) {      
-	sample.reading_time = unix_time;   
-	read_dht22();
-    q.push(sample);
-  } else if (rs.isTimeToSendReading(unix_time)) {
-    if(resolveHost()) {
-      reading curr_sample;
-      bool reading_sent;
-      do {
-        reading_sent=false;
-        curr_sample = q.front();  
-        sprintf(url, "/dht22/get_reading.php?core_id=%s&temp=%2f&hum=%2f&unix_time=%i&uptime=%i", 
-                     Spark.deviceID().c_str(), curr_sample.temperature, 
-                     curr_sample.humidity, curr_sample.reading_time,
-                     (unix_time-uptime_start));  
-        request.path = url;
-        http.get(request, response);
-        char read_time_chars[12];
-        sprintf(read_time_chars, "%d", curr_sample.reading_time);
-        String read_time_str(read_time_chars);
-        if(read_time_str.equals(response.body)) {
-          q.pop();
-          reading_sent=true;
-        }      
-      } while(reading_sent && !q.empty());
-    }
-    rs.setReadingSent();
+  switch(stage) {
+    case rs.SAMPLING:
+      {
+        sample.reading_time = unix_time;   
+        read_dht22();
+        rs.setSamplingComplete();
+        q.push(sample);
+      }
+      break;
+    case rs.SEND_READING:
+      {
+        if(resolveHost()) {
+          reading curr_sample;
+          bool reading_sent;
+          do {
+            reading_sent=false;
+            curr_sample = q.front();  
+            sprintf(url, "/dht22/get_reading.php?unix_time=%i&temp=%.2f&hum=%.2f&core_id=%s&uptime=%i", 
+                         curr_sample.reading_time,  
+                         curr_sample.temperature, curr_sample.humidity, 
+                         Spark.deviceID().c_str(), (unix_time-uptime_start));  
+            request.path = url;
+            http.get(request, response);
+            char read_time_chars[12];
+            sprintf(read_time_chars, "%d", curr_sample.reading_time);
+            String read_time_str(read_time_chars);
+            if(read_time_str.equals(response.body)) {
+              q.pop();
+              reading_sent=true;
+            }      
+          } while(reading_sent && !q.empty());
+        }
+        rs.setReadingSent();      
+      }
+      break;
+    default:
+      break;
   }
   delay(1000);
 }
