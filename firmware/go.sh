@@ -9,3 +9,4 @@ echo ------------------------------------------------------------------- flash
 sudo spark flash --usb firmware.bin
 rm firmware.bin
 
+

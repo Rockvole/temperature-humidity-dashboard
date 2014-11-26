@@ -17,6 +17,9 @@ do
 
   echo url
   spark get rockvole3 url
+
+  echo stage
+  spark get rockvole3 stage
   
   sleep 300
 done
