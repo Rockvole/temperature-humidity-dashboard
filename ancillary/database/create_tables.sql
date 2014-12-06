@@ -5,8 +5,12 @@ use dht22;
 create table cores (id INT NOT NULL AUTO_INCREMENT, core_name VARCHAR(24), name VARCHAR(20), tz VARCHAR(40), 
 UNIQUE(core_name), UNIQUE(name), PRIMARY KEY (id));
 
-create table readings (id INT NOT NULL AUTO_INCREMENT, temperature INT, humidity INT, 
-core_id INT, ts INT UNSIGNED, PRIMARY KEY (id), UNIQUE(core_id, ts));
+create table readings (id INT NOT NULL AUTO_INCREMENT, 
+temperature DECIMAL(4,2),
+humidity INT, 
+core_id INT, 
+ts INT UNSIGNED, 
+PRIMARY KEY (id), UNIQUE(core_id, ts));
 
 create table locations (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(40), core_id INT, ts INT UNSIGNED, 
 UNIQUE(core_id, ts), PRIMARY KEY (id));
