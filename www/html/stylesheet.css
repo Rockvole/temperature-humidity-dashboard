@@ -1,6 +1,6 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  text-align: center;
+  text-align: left;
   margin: 0;
   padding: 0 15px;
 }
@@ -9,6 +9,10 @@ h2 {
   color:blueviolet;
 }
 h3 {
+  color:blueviolet;
+  margin:8px 0px 0px 0px;
+}
+h4 {
   color:blueviolet;
   margin:8px 0px 0px 0px;
 }

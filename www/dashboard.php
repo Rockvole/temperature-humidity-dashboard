@@ -95,7 +95,7 @@ if(!isset($row['ts'])) {
   echo "<img src='html/location.png' onclick='location.href=\"add_location.php?id=$id&year=".$date->format('Y')."&month=".$date->format('n')."\"' style='cursor:pointer;'>";
   echo "</td></tr>";
   echo "</table>";
-  echo "<td align=right><input type='button' value='Download CSV' onclick='location.href=\"download_csv.php?id=$id\"'></td></tr>";
+  echo "<td align=right><input type='button' value='Download CSV' onclick='location.href=\"transfer/download.php?id=$id\"'></td></tr>";
   echo "<tr>";
   echo "<td colspan=2 width=$graph_width align=center>";
   echo "<table border=0>";
