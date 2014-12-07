@@ -129,7 +129,7 @@ while($row = mysqli_fetch_array($result)) {
   echo "<tr><td></td>";
   $date = Carbon::createFromTimeStamp($row['ts']);
   echo "<td style='vertical-align:middle'>" . $row['name'] . " @ ".$date->format($param_date_format);
-  echo "&nbsp;&nbsp;<img src='html/delete.gif' onclick='delete_location(".$row['ts'].");' style='cursor:pointer;'>";
+  echo "&nbsp;&nbsp;<img src='images/delete.gif' onclick='delete_location(".$row['ts'].");' style='cursor:pointer;'>";
   echo "</td>\n";
   echo "</tr>";
 }
