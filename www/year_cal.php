@@ -21,8 +21,6 @@ use Carbon\Carbon;
 require('calendar/calendar.php');
 include 'globals.php';
 
-if(!isset($_GET["id"])) exit("Must specify id parameter");
-$id = htmlspecialchars($_GET["id"]);
 $sensor = htmlspecialchars($_GET["sensor"]);
 switch($sensor) { 
   default: // Humidity
@@ -61,12 +59,9 @@ $currentYear = $calendar->year($year);
   echo "<table border=0 width='100%'>";
   echo "<tr><td colspan=5>";
   echo "<table border=0>";
-  echo "<td><h2>$title_name Calendar</h2></td>";
-  $name_result=mysqli_query($conn,"SELECT name from cores WHERE id=$id");
-  $name_row = mysqli_fetch_array($name_result);
-  $name=$name_row['name'];  
+  echo "<td><h2>$title_name Calendar</h2></td>"; 
   echo "<td>";
-  echo "<span style='padding:4px 10px 4px 10px;font-size:20px;font-weight:bold;color:#CC6666;vertical-align:top;'>$name</span>";
+  echo "<span style='padding:4px 10px 4px 10px;font-size:20px;font-weight:bold;color:#CC6666;vertical-align:top;'>$sensor_name</span>";
   echo "</td>";
   echo "<td width=400>&nbsp;</td>";
   echo "</table>";

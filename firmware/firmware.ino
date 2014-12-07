@@ -14,6 +14,11 @@ struct reading {
     int    reading_time = 0;    
     double temperature = 0;
     double humidity = 0;
+    uint8_t b0;
+    uint8_t b1;
+    uint8_t b2;
+    uint8_t b3;
+    uint8_t b4;
 };
 
 std::queue<reading> q;
@@ -82,8 +87,11 @@ void loop()
           do {
             reading_sent=false;
             curr_sample = q.front();  
+            sprintf(url, "/dht22/get_reading.php?unix_time=%i&temp=%.2f&hum=%.2f&core_id=%s&uptime=%i&raw=%02x%02x%02x%02x%02x", 
                          curr_sample.reading_time,  
                          curr_sample.temperature, curr_sample.humidity, 
+                         Spark.deviceID().c_str(), (unix_time-uptime_start),
+                         curr_sample.b0, curr_sample.b1, curr_sample.b2, curr_sample.b3, curr_sample.b4);  
             request.path = url;
             http.get(request, response);
             char read_time_chars[12];
@@ -110,6 +118,11 @@ void read_dht22() {
     
   sample.humidity = DHT.getHumidity();
   sample.temperature = DHT.getCelsius(); 
+  sample.b0 = DHT._bits[0];
+  sample.b1 = DHT._bits[1];
+  sample.b2 = DHT._bits[2];
+  sample.b3 = DHT._bits[3];
+  sample.b4 = DHT._bits[4];    
 }
 
 bool resolveHost() {
