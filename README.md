@@ -23,4 +23,4 @@ LAMP based Temperature and Humidity Web Dashboard for the Spark Core
 </p>
 
 ### SHT15 Schematic
-![Schematic](SHT1x-Breakout-v13.pdf)
+<a href="SHT1x-Breakout-v13.pdf">Schematic</a>
