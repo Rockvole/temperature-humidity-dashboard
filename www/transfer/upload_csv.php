@@ -20,7 +20,7 @@ if (($handle = fopen($filename, "r")) !== FALSE) {
     if($num_fields==3) {
       $row++;
       for ($i=0; $i < $num_fields; $i++) {
-	if(!is_numeric($data[$i])) $valid_row=false;
+        if(!is_numeric($data[$i])) $valid_row=false;
         echo $data[$i].",";
       }
       echo "\n";
@@ -36,10 +36,9 @@ if (($handle = fopen($filename, "r")) !== FALSE) {
         } else {
           $sql = "   UPDATE readings set temperature=$data[0], humidity=$data[1] ".
 	         "    WHERE core_id=$core_id and ts=$data[2]";
-	  if($result=mysqli_query($conn,$sql)) {
-	    echo "SUCCESS: ".$sql."\n";		  
-	  }
-          
+          if($result=mysqli_query($conn,$sql)) {
+            echo "SUCCESS: ".$sql."\n";		  
+          }
         }
       }
     }
