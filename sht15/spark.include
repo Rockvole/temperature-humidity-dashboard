@@ -1,0 +1,9 @@
+firmware.ino
+../dht22/HttpClient/HttpClient.cpp
+../dht22/HttpClient/HttpClient.h
+../dht22/ReadingSync/ReadingSync.cpp
+../dht22/ReadingSync/ReadingSync.h
+SHT1x/SHT1x.cpp
+SHT1x/SHT1x.h
+
+
